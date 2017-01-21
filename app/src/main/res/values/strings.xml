@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Chopper Attack</string>
+
+    <string name="action_exit">Exit</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="app_description">A simple helicopter game where the copter is faulty and the
+        objective is to reach base,the mission is to avoid missiles and enemy helicopters. </string>
+
+    <string name="splash">Splash Screen</string>
+
+    <string name="splash_startup_picture">splash startup picture</string>
+
+    <drawable name="splash_background1">@drawable/splash1</drawable>
+
+    <drawable name="splash_heli">@drawable/helicopter_splash</drawable>)
+
+    <string name="game">Play</string>
+
+    <string name="scores">High Scores</string>
+
+    <string name="help">Help</string>
+
+    <string name="menu">Main Menu </string>
+    <string name="exit">Exit</string>
+
+</resources>

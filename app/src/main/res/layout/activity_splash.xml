@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_splash"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/splash1"
+    tools:context="com.drecot.chopperattack.SplashScreen">
+
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar10"
+        android:visibility="visible"
+        tools:visibility="visible"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="36dp"
+        android:indeterminate="true"
+        android:layout_width="wrap_content" />
+
+    <TextView
+        android:text="Chopper"
+        android:id="@+id/textView1"
+        android:layout_marginTop="102dp"
+        android:textSize="40sp"
+        android:fontFamily="sans-serif"
+        tools:ignore="HardcodedText,UnusedAttribute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/progressBar10"
+        android:layout_alignEnd="@+id/progressBar10"
+        android:layout_marginRight="13dp"
+        android:layout_marginEnd="13dp" />
+
+    <TextView
+        android:text="Attack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView2"
+        android:soundEffectsEnabled="false"
+        android:textSize="40sp"
+        tools:ignore="HardcodedText"
+        android:layout_alignBaseline="@+id/textView1"
+        android:layout_alignBottom="@+id/textView1"
+        android:layout_toRightOf="@+id/textView1"
+        android:layout_toEndOf="@+id/textView1"
+        android:textColor="@color/material_blue_grey_950" />
+
+
+</RelativeLayout>
