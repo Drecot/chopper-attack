@@ -48,8 +48,10 @@ public class Game extends Activity {
     }
     @Override
     public void onBackPressed() {
+        backgroundMusic.release();
+        backgroundMusic=null;
         Intent intent = new Intent(this, MenuActivity.class);
-        startActivity(intent);;
+        startActivity(intent);
         finish();
 
     }

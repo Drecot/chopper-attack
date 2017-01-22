@@ -34,14 +34,7 @@ public class MenuActivity extends Activity {
     }
 
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-    public void onBackPressed() {
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            isDestroyed();
-        }
-
-    }
 
     public void addListenerOnButton() {
 
@@ -54,6 +47,7 @@ public class MenuActivity extends Activity {
             @Override
             public void onClick(View arg0) {
                 backgroundMusic.release();
+                backgroundMusic=null;
                 Intent intent = new Intent(context, Game.class);
                 startActivity(intent);
                 finish();
