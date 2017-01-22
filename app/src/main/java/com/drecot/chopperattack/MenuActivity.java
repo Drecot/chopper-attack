@@ -12,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.io.IOException;
 
 
 public class MenuActivity extends Activity {
@@ -52,7 +53,7 @@ public class MenuActivity extends Activity {
 
             @Override
             public void onClick(View arg0) {
-                backgroundMusic.stop();
+                backgroundMusic.release();
                 Intent intent = new Intent(context, Game.class);
                 startActivity(intent);
                 finish();
