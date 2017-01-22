@@ -51,6 +51,7 @@ public class Game extends Activity {
         Intent intent = new Intent(this, MenuActivity.class);
         startActivity(intent);
         finish();
+
     }
 
 
