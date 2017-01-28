@@ -118,17 +118,24 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                 player.setUp(true);
 
             }
-            if(distance==distance){
-                distance=distance-20;
-            }
+
             if(player.getPlaying())
             {
 
                 if(!started)started = true;
                 reset = false;
                 player.setUp(true);
+                if (distance==distance) {
+                distance= distance - 500;
+                }
+                if (distance<=0) {
+                    player.setPlaying(false);
+
+                }
+
             }
             return true;
+
         }
         if(event.getAction()==MotionEvent.ACTION_UP)
         {
@@ -266,11 +273,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     }
     public boolean collision(GameObject a, GameObject b)
     {
-        if(Rect.intersects(a.getRectangle(), b.getRectangle()))
-        {
-            return true;
-        }
-        return false;
+        return Rect.intersects(a.getRectangle(), b.getRectangle());
     }
     @Override
     public void draw(Canvas canvas)
@@ -476,13 +479,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         if(!player.getPlaying()&&newGameCreated&&reset)
         {
             Paint paint1 = new Paint();
-            paint1.setTextSize(40);
-            paint1.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-            canvas.drawText("PRESS TO START", WIDTH/2-50, HEIGHT/2, paint1);
-
             paint1.setTextSize(20);
-            canvas.drawText("PRESS AND HOLD TO GO UP", WIDTH/2-50, HEIGHT/2 + 20, paint1);
-            canvas.drawText("RELEASE TO GO DOWN", WIDTH/2-50, HEIGHT/2 + 40, paint1);
+            paint1.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+            canvas.drawText("PRESS TO START", WIDTH-500, HEIGHT/2, paint1);
+
         }
     }
 

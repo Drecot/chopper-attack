@@ -17,6 +17,8 @@ import java.io.IOException;
 
 public class MenuActivity extends Activity {
     Button button;
+    Button button1;
+    Button button2;
     MediaPlayer backgroundMusic;
 
     @Override
@@ -55,6 +57,28 @@ public class MenuActivity extends Activity {
 
             }
 
+        });
+        button1 = (Button) findViewById(R.id.button4);
+
+        button1.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                Intent intent = new Intent(context, HelpActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        button2 = (Button) findViewById(R.id.button3);
+
+        button2.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                Intent intent = new Intent(context, ScoresActivity.class);
+                startActivity(intent);
+                finish();
+            }
         });
 
     }
