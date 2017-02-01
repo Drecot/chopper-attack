@@ -2,6 +2,7 @@ package com.drecot.chopperattack;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -29,6 +30,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     private MainThread thread;
     private Background bg;
     private Player player;
+    private Fuel fuel;
     private boolean playing;
     private ArrayList<Smokepuff> smoke;
     private ArrayList<Missile> missiles;
@@ -95,6 +97,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
       bg = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.grassbg1));
       player = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.helicopter), 65, 25, 3);
+      fuel = new Fuel(BitmapFactory.decodeResource(getResources(), R.drawable.fuel), 40, 40, 1);
       smoke = new ArrayList<Smokepuff>();
       missiles = new ArrayList<Missile>();
       topborder = new ArrayList<TopBorder>();
@@ -125,9 +128,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                 if(!started)started = true;
                 reset = false;
                 player.setUp(true);
-                if (distance==distance) {
-                distance= distance - 500;
-                }
+                distance-=25;
                 if (distance<=0) {
                     player.setPlaying(false);
 
@@ -164,6 +165,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
             bg.update();
             player.update();
+            fuel.update();
+            collectCoin(player, fuel);
 
             //check bottom border collision
             for(int i = 0; i<botborder.size(); i++)
@@ -182,7 +185,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             //update top border
             this.updateTopBorder();
 
-            //udpate bottom border
+            //update bottom border
             this.updateBottomBorder();
 
             //add missiles on timer
@@ -275,11 +278,19 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     {
         return Rect.intersects(a.getRectangle(), b.getRectangle());
     }
+    public boolean collectCoin(GameObject player, GameObject fuel){
+        if(Rect.intersects(player.getRectangle(),fuel.getRectangle()))
+        {
+            coidcollectet();
+            return true;
+        }
+        return false;
+    }
+    public void coidcollectet(){fuel.fuelCollected();}
     @Override
     public void draw(Canvas canvas)
     {
-        final float scaleFactorX = getWidth()/(WIDTH*1.f
-        );
+        final float scaleFactorX = getWidth()/(WIDTH*1.f);
         final float scaleFactorY = getHeight()/(HEIGHT*1.f);
 
         if(canvas!=null) {
@@ -289,6 +300,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             if(!disappear) {
                 player.draw(canvas);
             }
+            // draw coins
+
+                fuel.draw(canvas);
+
             //draw smokepuffs
             for(Smokepuff sp: smoke)
             {
@@ -420,8 +435,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         missiles.clear();
         smoke.clear();
 
-        minBorderHeight = 5;
-        maxBorderHeight = 30;
+        minBorderHeight = 1;
+        maxBorderHeight = 1;
 
         player.resetDY();
         player.resetScore();
@@ -472,7 +487,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         paint.setColor(Color.BLACK);
         paint.setTextSize(30);
         paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-        canvas.drawText("DISTANCE: " + distance, 10, HEIGHT - 10, paint);
+        canvas.drawText("FUEL: " + distance, 10, HEIGHT - 10, paint);
         canvas.drawText("BEST: " + best, WIDTH - 215, HEIGHT - 10, paint);
         canvas.drawText("SCORE: " + player.getScore(), 350, HEIGHT - 10, paint);
 
@@ -480,10 +495,25 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         {
             Paint paint1 = new Paint();
             paint1.setTextSize(20);
+            paint1.setTextAlign(Paint.Align.CENTER);
             paint1.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
             canvas.drawText("PRESS TO START", WIDTH-500, HEIGHT/2, paint1);
 
         }
+        if(player.getPlaying() &&newGameCreated &&reset){
+            Paint paint2 = new Paint();
+            paint2.setColor(Color.BLACK);
+            paint2.setTextSize(80);
+            paint2.setTextAlign(Paint.Align.CENTER);
+            canvas.drawText("Game	Over",	HEIGHT/2,	100,	paint2);
+
+            paint2.setTextSize(25);
+            canvas.drawText("BEST:"+ best,	HEIGHT/2,	160,	paint);
+
+            paint.setTextSize(80);
+            canvas.drawText("Tap	to	replay!",	HEIGHT/2,	350,	paint);
+        }
+
     }
 
 

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -45,13 +46,16 @@ public class Game extends Activity {
 
         return super.onTouchEvent(bg);
 
-    }
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(this, MenuActivity.class);
-        startActivity(intent);
-        finish();
 
+    }
+    public	boolean	onKeyDown(int	keyCode,	KeyEvent event)	{
+        if	(keyCode	==	KeyEvent.KEYCODE_BACK)	{
+            Intent intent = new Intent(this, MenuActivity.class);
+            startActivity(intent);
+            finish();
+            return	true;
+        }
+        return	false;
     }
 
 

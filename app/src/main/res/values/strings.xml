@@ -22,11 +22,18 @@
 
     <string name="help">Help</string>
 
-    <string name="helpscreen">Help
+    <string name="helpscreen">\t\t\tCONTROLS\n
+Touch the screen to move up and leave the screen to move down.
+
+\t\t\tABOUT\n
+A simple helicopter game where the copter is faulty and the
+objective is to reach base,the mission is to avoid missiles and enemy helicopters.
+
 
 </string>
 
     <string name="menu">Main Menu </string>
+
     <string name="exit">Exit</string>
 
 </resources>

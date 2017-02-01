@@ -1,18 +1,15 @@
 package com.drecot.chopperattack;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
-import android.os.Build;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
-
-import java.io.IOException;
 
 
 public class MenuActivity extends Activity {
@@ -81,6 +78,15 @@ public class MenuActivity extends Activity {
             }
         });
 
+    }
+    public	boolean	onKeyDown(int	keyCode,	KeyEvent event)	{
+        if	(keyCode	==	KeyEvent.KEYCODE_BACK)	{
+            backgroundMusic.stop();
+            backgroundMusic.release();
+            finish();
+            return	true;
+        }
+        return	false;
     }
 
 }
