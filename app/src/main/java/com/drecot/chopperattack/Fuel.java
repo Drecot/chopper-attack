@@ -3,6 +3,7 @@ package com.drecot.chopperattack;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
 
 public class Fuel extends GameObject {
 
@@ -10,8 +11,10 @@ public class Fuel extends GameObject {
         private double dya;
         private boolean playing;
         private long startTime;
+
         private Animation animation = new Animation();
         private int num = 0;
+
 
 
         public Fuel(Bitmap res, int w, int h, int numFrames) {
@@ -28,21 +31,21 @@ public class Fuel extends GameObject {
 
             for (int i = 0; i < image.length; i++)
             {
-                image[i] = Bitmap.createBitmap(spritesheet, i*width, 0, width, height);
+                image[i] = Bitmap.createBitmap(spritesheet, 0, i*height, width, height);
             }
             animation.setFrames(image);
             animation.setDelay(100);
-
+            animation.update();
         }
         public void update()
         {
-            if (y <= 50) {
+            if (x < 0) {
                 resetO();
             }
             x += dx;
             long elapsed = (System.nanoTime() - startTime) / 1000000;
-            if (elapsed > 10000) {
-                dx = dx - 1;
+            if (elapsed > 1000) {
+                dx = dx - 1 ;
                 startTime = System.nanoTime();
                 System.out.println(dx);
                 num = num + 30;
@@ -53,7 +56,7 @@ public class Fuel extends GameObject {
             if (num >= 200) {
                 num = 200;
             }
-
+        animation.update();
         }
         public void draw(Canvas canvas)
         {
