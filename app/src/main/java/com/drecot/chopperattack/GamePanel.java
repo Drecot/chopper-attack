@@ -30,8 +30,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     private MainThread thread;
     private Background bg;
     private Player player;
-    private Fuel fuel;
     private boolean playing;
+    private Fuel fuel;
     private ArrayList<Smokepuff> smoke;
     private ArrayList<Missile> missiles;
     private ArrayList<TopBorder> topborder;
@@ -97,7 +97,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
       bg = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.grassbg1));
       player = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.helicopter), 65, 25, 3);
-      fuel = new Fuel(BitmapFactory.decodeResource(getResources(), R.drawable.fuel), 40, 40, 1);
+      fuel = new Fuel(BitmapFactory.decodeResource(getResources(), R.drawable.fuel),40,40,1);
       smoke = new ArrayList<Smokepuff>();
       missiles = new ArrayList<Missile>();
       topborder = new ArrayList<TopBorder>();
@@ -166,7 +166,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             bg.update();
             player.update();
             fuel.update();
-            collectCoin(player, fuel);
+            if(collectFuel(player,fuel)){
+                distance +=100;
+            }
 
             //check bottom border collision
             for(int i = 0; i<botborder.size(); i++)
@@ -278,15 +280,17 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     {
         return Rect.intersects(a.getRectangle(), b.getRectangle());
     }
-    public boolean collectCoin(GameObject player, GameObject fuel){
+    public boolean collectFuel(GameObject player, GameObject fuel){
         if(Rect.intersects(player.getRectangle(),fuel.getRectangle()))
         {
-            coidcollectet();
+            fuelCollected();
             return true;
         }
         return false;
     }
-    public void coidcollectet(){fuel.fuelCollected();}
+    public void fuelCollected(){fuel.fuelCollected();}
+
+
     @Override
     public void draw(Canvas canvas)
     {
@@ -302,7 +306,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             }
             // draw coins
 
-                fuel.draw(canvas);
+            fuel.draw(canvas);
 
             //draw smokepuffs
             for(Smokepuff sp: smoke)
@@ -434,6 +438,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
         missiles.clear();
         smoke.clear();
+        fuel.resetO();
 
         minBorderHeight = 1;
         maxBorderHeight = 1;
