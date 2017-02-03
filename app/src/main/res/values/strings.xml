@@ -35,5 +35,7 @@ objective is to reach base,the mission is to avoid missiles and enemy helicopter
     <string name="menu">Main Menu </string>
 
     <string name="exit">Exit</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 
 </resources>

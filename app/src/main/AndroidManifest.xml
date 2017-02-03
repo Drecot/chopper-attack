@@ -1,49 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.drecot.chopperattack"
     android:versionCode="1"
     android:versionName="1.0">
 
-    <uses-sdk android:minSdkVersion="9"/>
+    <uses-sdk android:minSdkVersion="13" />
+
+    <android:uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <android:uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
+        android:description="@string/app_description"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:description="@string/app_description"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        ☺<activity
-            android:screenOrientation="portrait"
+        ☺
+        <activity
             android:name=".SplashScreen"
-            android:label="Chopper Attack" >
-
+            android:label="Chopper Attack"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-
-        <activity android:name=".MenuActivity"
-            android:screenOrientation="sensor"
-            android:label="@string/menu">
-        </activity>
-
+        <activity
+            android:name=".MenuActivity"
+            android:label="@string/menu"
+            android:screenOrientation="sensor" />
         <activity
             android:name=".Game"
-            android:screenOrientation="sensorLandscape"
-            android:label="Chopper Attack" >
-
+            android:label="Chopper Attack"
+            android:screenOrientation="sensorLandscape" />
+        <activity android:name=".HelpActivity" />
+        <activity android:name=".ScoresActivity" />
+        <activity android:name=".SettingsActivity" />
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main"
+            android:parentActivityName=".ScoresActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.drecot.chopperattack.ScoresActivity" />
         </activity>
-        <activity android:name=".HelpActivity"/>
-
-        <activity android:name=".ScoresActivity"/>
-
-        <activity android:name=".SettingsActivity"/>
-
     </application>
 
 </manifest>

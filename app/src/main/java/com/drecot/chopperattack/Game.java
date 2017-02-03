@@ -29,7 +29,9 @@ public class Game extends Activity {
         //set to full screen
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-
+        backgroundMusic = MediaPlayer.create(Game.this, R.raw.game);
+        backgroundMusic.setLooping(true);
+        backgroundMusic.setVolume(10.0f,3.0f);
 
         setContentView(new GamePanel(this));
 
@@ -39,9 +41,7 @@ public class Game extends Activity {
     @Override
     public boolean onTouchEvent(MotionEvent bg) {
       //play music
-        backgroundMusic = MediaPlayer.create(Game.this, R.raw.game);
-        backgroundMusic.setLooping(true);
-        backgroundMusic.setVolume(10.0f,3.0f);
+
         backgroundMusic.start();
 
         return super.onTouchEvent(bg);

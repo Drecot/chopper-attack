@@ -304,7 +304,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             if(!disappear) {
                 player.draw(canvas);
             }
-            // draw coins
+            // draw fuel can
 
             fuel.draw(canvas);
 
