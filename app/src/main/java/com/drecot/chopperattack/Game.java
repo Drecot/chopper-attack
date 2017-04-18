@@ -6,6 +6,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.Window;
@@ -31,7 +32,8 @@ public class Game extends Activity {
 
         backgroundMusic = MediaPlayer.create(Game.this, R.raw.game);
         backgroundMusic.setLooping(true);
-        backgroundMusic.setVolume(10.0f,3.0f);
+        backgroundMusic.setVolume(7.0f, 7.0f);
+
 
         setContentView(new GamePanel(this));
 
@@ -41,7 +43,6 @@ public class Game extends Activity {
     @Override
     public boolean onTouchEvent(MotionEvent bg) {
       //play music
-
         backgroundMusic.start();
 
         return super.onTouchEvent(bg);
@@ -52,6 +53,8 @@ public class Game extends Activity {
         if	(keyCode	==	KeyEvent.KEYCODE_BACK)	{
             Intent intent = new Intent(this, MenuActivity.class);
             startActivity(intent);
+            backgroundMusic.stop();
+            backgroundMusic.release();
             finish();
             return	true;
         }
@@ -60,8 +63,8 @@ public class Game extends Activity {
 
 
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_game, menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_game, menu);
         return true;
     }
 
@@ -79,4 +82,5 @@ public class Game extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
+  
 }

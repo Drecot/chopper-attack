@@ -2,25 +2,26 @@ package com.drecot.chopperattack;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.opengl.GLSurfaceView;
 import android.preference.PreferenceManager;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.Random;
 
+import static android.content.Context.MODE_PRIVATE;
 
 
-public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
+
+public class GamePanel extends GLSurfaceView implements SurfaceHolder.Callback
 {
     public static final int WIDTH = 856;
     public static final int HEIGHT = 480;
@@ -31,7 +32,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     private Background bg;
     private Player player;
     private boolean playing;
-    private Fuel fuel;
+    private Fuelsmall fuelsmall;
+    private Fuelbig fuelbig;
+    private Fuelnegative fuelnegative;
     private ArrayList<Smokepuff> smoke;
     private ArrayList<Missile> missiles;
     private ArrayList<TopBorder> topborder;
@@ -55,8 +58,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     private int best;
     private int distance=3500;
 
-
-
     public GamePanel(Context context)
     {
         super(context);
@@ -69,48 +70,49 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
         //make gamePanel focusable so it can handle events
         setFocusable(true);
+
     }
 
-  @Override
-  public void surfaceChanged(SurfaceHolder holder, int format, int width, int height){}
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height){}
 
-  @Override
+    @Override
     public void surfaceDestroyed(SurfaceHolder holder){
-    boolean retry = true;
-    int counter = 0;
-    while(retry && counter<1000)
-    {
-        counter++;
-        try{thread.setRunning(false);
-            thread.join();
-            retry = false;
-            thread = null;
+        boolean retry = true;
+        int counter = 0;
+        while(retry && counter<1000)
+        {
+            counter++;
+            try{thread.setRunning(false);
+                thread.join();
+                retry = false;
+                thread = null;
+            }catch(InterruptedException e){e.printStackTrace();}
 
-        }catch(InterruptedException e){e.printStackTrace();}
+        }
 
     }
 
-  }
-
-  @Override
+    @Override
     public void surfaceCreated(SurfaceHolder holder){
 
-      bg = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.grassbg1));
-      player = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.helicopter), 65, 25, 3);
-      fuel = new Fuel(BitmapFactory.decodeResource(getResources(), R.drawable.fuel),40,40,1);
-      smoke = new ArrayList<Smokepuff>();
-      missiles = new ArrayList<Missile>();
-      topborder = new ArrayList<TopBorder>();
-      botborder = new ArrayList<BotBorder>();
-      smokeStartTime=  System.nanoTime();
-      missileStartTime = System.nanoTime();
+        bg = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.grassbg1));
+        player = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.helicopter), 65, 25, 3);
+        fuelsmall = new Fuelsmall(BitmapFactory.decodeResource(getResources(), R.drawable.fuelsmall),20,20,1);
+        fuelbig = new Fuelbig(BitmapFactory.decodeResource(getResources(), R.drawable.fuelbig),40,40,1);
+        fuelnegative = new Fuelnegative(BitmapFactory.decodeResource(getResources(), R.drawable.fuelnegative),20,20,1);
+        smoke = new ArrayList<Smokepuff>();
+        missiles = new ArrayList<Missile>();
+        topborder = new ArrayList<TopBorder>();
+        botborder = new ArrayList<BotBorder>();
+        smokeStartTime=  System.nanoTime();
+        missileStartTime = System.nanoTime();
 
-      thread = new MainThread(getHolder(), this);
-      //we can safely start the game loop
-      thread.setRunning(true);
-      thread.start();
-
-  }
+        thread = new MainThread(getHolder(), this);
+        //we can safely start the game loop
+        thread.setRunning(true);
+        thread.start();
+    }
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
@@ -128,10 +130,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                 if(!started)started = true;
                 reset = false;
                 player.setUp(true);
-                distance-=25;
+                distance-=50;
                 if (distance<=0) {
-                    player.setPlaying(false);
-
+                    player.setUp(false);
                 }
 
             }
@@ -150,6 +151,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     public void update()
 
     {
+
         if(player.getPlaying()) {
 
             if(botborder.isEmpty())
@@ -165,9 +167,17 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
             bg.update();
             player.update();
-            fuel.update();
-            if(collectFuel(player,fuel)){
-                distance +=100;
+            fuelsmall.update();
+            fuelbig.update();
+            fuelnegative.update();
+            if(collectFuelSmall(player, fuelsmall)){
+                distance +=500;
+            }
+            if(collectFuelBig(player, fuelbig)){
+                distance +=1000;
+            }
+            if(collectFuelNegative(player, fuelnegative)){
+                distance -= 250;
             }
 
             //check bottom border collision
@@ -175,6 +185,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             {
                 if(collision(botborder.get(i), player))
                     player.setPlaying(false);
+
             }
 
             //check top border collision
@@ -199,13 +210,13 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
                 if(missiles.size()==0)
                 {
                     missiles.add(new Missile(BitmapFactory.decodeResource(getResources(),R.drawable.
-                            missile),WIDTH + 10, HEIGHT/2, 45, 15, player.getScore(), 13));
+                            missile),WIDTH + 10, HEIGHT/2, 38, 14, player.getScore(), 2));
                 }
                 else
                 {
 
                     missiles.add(new Missile(BitmapFactory.decodeResource(getResources(),R.drawable.missile),
-                            WIDTH+10, (int)(rand.nextDouble()*(HEIGHT - (maxBorderHeight * 2))+maxBorderHeight),45,15, player.getScore(),13));
+                            WIDTH+10, (int)(rand.nextDouble()*(HEIGHT - (maxBorderHeight * 2))+maxBorderHeight),38,14, player.getScore(),2));
                 }
 
                 //reset timer
@@ -248,47 +259,75 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             }
         }
         else{
-                    player.resetDY();
-                    if(!reset)
-                    {
-                        newGameCreated = false;
-                        startReset = System.nanoTime();
-                        reset = true;
-                        disappear = true;
-                        explosion = new Explosion(BitmapFactory.decodeResource(getResources(),R.drawable.explosion),player.getX(),
-                                player.getY()-30, 100, 100, 25);
-                        distance=3500;
-                    }
+            player.resetDY();
+            if(!reset)
+            {
+                newGameCreated = false;
+                startReset = System.nanoTime();
+                reset = true;
+                disappear = true;
+                explosion = new Explosion(BitmapFactory.decodeResource(getResources(),R.drawable.explosion),player.getX(),
+                        player.getY()-30, 100, 100, 25);
+                distance=3500;
+            }
 
-                    explosion.update();
-                    long resetElapsed = (System.nanoTime()-startReset)/1000000;
+            explosion.update();
+            long resetElapsed = (System.nanoTime()-startReset)/1000000;
 
 
-                    if(resetElapsed > 2500 && !newGameCreated)
-                    {
-                        newGame();
-
-                    }
+            if(resetElapsed > 2500 && !newGameCreated)
+            {
+                newGame();
 
             }
-        if(player.getScore()>best) {
-            best = player.getScore();
+
         }
 
-    }
+        if (player.getScore() > getBestScore()) {
+            setBestScore(player.getScore());
+        }
+        }
+
+
     public boolean collision(GameObject a, GameObject b)
     {
         return Rect.intersects(a.getRectangle(), b.getRectangle());
     }
-    public boolean collectFuel(GameObject player, GameObject fuel){
-        if(Rect.intersects(player.getRectangle(),fuel.getRectangle()))
+    public boolean collectFuelSmall(GameObject player, GameObject fuelsmall){
+        if(Rect.intersects(player.getRectangle(),fuelsmall.getRectangle()))
         {
-            fuelCollected();
+            fuelCollectedSmall();
             return true;
         }
         return false;
     }
-    public void fuelCollected(){fuel.fuelCollected();}
+
+    public boolean collectFuelBig(GameObject player, GameObject fuelbig) {
+        if (Rect.intersects(player.getRectangle(), fuelbig.getRectangle()))
+        {
+            fuelCollectedBig();
+            return true;
+        }
+        return false;
+    }
+
+    public boolean collectFuelNegative(GameObject player, GameObject fuelnegative) {
+        if (Rect.intersects(player.getRectangle(), fuelnegative.getRectangle()))
+        {
+            fuelCollectedNegative();
+            return true;
+        }
+        return false;
+    }
+
+    public void fuelCollectedSmall(){fuelsmall.fuelCollectedSmall();}
+
+    public void fuelCollectedBig(){fuelbig.fuelCollectedBig();}
+
+    public void fuelCollectedNegative(){fuelnegative.fuelCollectedNegative();}
+
+
+
 
 
     @Override
@@ -304,9 +343,14 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             if(!disappear) {
                 player.draw(canvas);
             }
-            // draw fuel can
+            // draw fuelsmall can
+            fuelsmall.draw(canvas);
 
-            fuel.draw(canvas);
+            //draw fuelbig can
+            fuelbig.draw(canvas);
+
+            //draw fuelnegative can
+            fuelnegative.draw(canvas);
 
             //draw smokepuffs
             for(Smokepuff sp: smoke)
@@ -394,7 +438,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
         {
             botborder.add(new BotBorder(BitmapFactory.decodeResource(getResources(), R.drawable.brick),
                     botborder.get(botborder.size()-1).getX()+20,(int)((rand.nextDouble()
-            *maxBorderHeight)+(HEIGHT-maxBorderHeight))));
+                    *maxBorderHeight)+(HEIGHT-maxBorderHeight))));
         }
 
         //update bottom border
@@ -438,7 +482,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 
         missiles.clear();
         smoke.clear();
-        fuel.resetO();
+        fuelsmall.reset();
+        fuelbig.reset();
 
         minBorderHeight = 1;
         maxBorderHeight = 1;
@@ -472,7 +517,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
             if(i==0)
             {
                 botborder.add(new BotBorder(BitmapFactory.decodeResource(getResources(),R.drawable.brick)
-                ,i*20,HEIGHT - minBorderHeight));
+                        ,i*20,HEIGHT - minBorderHeight));
             }
             //adding borders until the initial screen is filed
             else
@@ -489,12 +534,13 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     public void drawText(Canvas canvas)
     {
         Paint paint = new Paint();
-        paint.setColor(Color.BLACK);
-        paint.setTextSize(30);
-        paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+        paint.setColor(Color.rgb(255,211,38));
+        paint.setTextSize(15);
+        paint.setTypeface(Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD));
         canvas.drawText("FUEL: " + distance, 10, HEIGHT - 10, paint);
-        canvas.drawText("BEST: " + best, WIDTH - 215, HEIGHT - 10, paint);
+        canvas.drawText("BEST: " + getBestScore(), WIDTH - 215, HEIGHT - 10, paint);
         canvas.drawText("SCORE: " + player.getScore(), 350, HEIGHT - 10, paint);
+
 
         if(!player.getPlaying()&&newGameCreated&&reset)
         {
@@ -522,16 +568,18 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
     }
 
 
-    public int getRecord(){
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getContext());
-        return prefs.getInt("record",0);
+
+
+
+    private void setBestScore(int bestScore) {
+        SharedPreferences.Editor editor = getContext().getSharedPreferences("gamepanel", MODE_PRIVATE).edit();
+        editor.putInt("bestScore", bestScore);
+        editor.apply();
     }
 
-    public void setRecord(int value){
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getContext());
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt("record",value);
-        editor.commit();
+    private int getBestScore() {
+        SharedPreferences prefs = getContext().getSharedPreferences("gamepanel", MODE_PRIVATE);
+        return prefs.getInt("bestScore", 0);
     }
 
 }

@@ -24,14 +24,13 @@ public class MenuActivity extends Activity {
         backgroundMusic = MediaPlayer.create(this, R.raw.menu);
 
         backgroundMusic.setLooping(true);
-        backgroundMusic.setVolume(10.0f,3.0f);
+        backgroundMusic.setVolume(7.0f, 7.0f);
         backgroundMusic.start();
 
         setContentView(R.layout.activity_menu);
         addListenerOnButton();
 
     }
-
 
 
 
@@ -74,7 +73,6 @@ public class MenuActivity extends Activity {
             public void onClick(View arg0) {
                 Intent intent = new Intent(context, ScoresActivity.class);
                 startActivity(intent);
-                finish();
             }
         });
 

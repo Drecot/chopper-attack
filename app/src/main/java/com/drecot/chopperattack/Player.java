@@ -4,10 +4,10 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
 
+
 public class Player extends GameObject{
     private Bitmap spritesheet;
     private int score;
-
     private boolean up;
     private boolean playing;
     private Animation animation = new Animation();
