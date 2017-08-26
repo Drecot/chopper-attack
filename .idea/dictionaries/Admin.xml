@@ -2,6 +2,8 @@
   <dictionary name="Admin">
     <words>
       <w>helpscreen</w>
+      <w>highscore</w>
+      <w>leaderboards</w>
     </words>
   </dictionary>
 </component>

@@ -7,7 +7,11 @@ import android.graphics.Canvas;
 
 public class Player extends GameObject{
     private Bitmap spritesheet;
-    private int score;
+    protected int score;
+    public int highScore[] = new int[10];
+    private String name;
+    protected int fuel;
+    private int maxfuel;
     private boolean up;
     private boolean playing;
     private Animation animation = new Animation();
@@ -19,8 +23,12 @@ public class Player extends GameObject{
         y = GamePanel.HEIGHT / 2;
         dy = 0;
         score = 0;
+        name = null;
+        fuel = 3500;
+        maxfuel = 10000;
         height = h;
         width = w;
+
 
         Bitmap[] image = new Bitmap[numFrames];
         spritesheet = res;
@@ -69,6 +77,8 @@ public class Player extends GameObject{
         canvas.drawBitmap(animation.getImage(),x,y,null);
     }
     public int getScore(){return score;}
+    public String getName(){return name;}
+    public int getFuel(){return fuel;}
     public boolean getPlaying(){return playing;}
     public void setPlaying(boolean b){playing = b;}
     public void resetDY(){dy = 0;}

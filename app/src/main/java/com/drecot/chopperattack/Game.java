@@ -2,27 +2,27 @@ package com.drecot.chopperattack;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+
 import android.view.Window;
 import android.view.WindowManager;
-
-import java.io.IOException;
 
 
 public class Game extends Activity {
 
-    MediaPlayer backgroundMusic;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(null);
+
+
+
 
         //turn title off
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -30,31 +30,39 @@ public class Game extends Activity {
         //set to full screen
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        backgroundMusic = MediaPlayer.create(Game.this, R.raw.game);
-        backgroundMusic.setLooping(true);
-        backgroundMusic.setVolume(7.0f, 7.0f);
-
-
         setContentView(new GamePanel(this));
+
+
+
 
     }
 
 
     @Override
     public boolean onTouchEvent(MotionEvent bg) {
-      //play music
-        backgroundMusic.start();
 
         return super.onTouchEvent(bg);
 
 
     }
+    @Override
+    public void onPause() {
+        super.onPause();
+
+
+
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+
+
+    }
+
     public	boolean	onKeyDown(int	keyCode,	KeyEvent event)	{
         if	(keyCode	==	KeyEvent.KEYCODE_BACK)	{
             Intent intent = new Intent(this, MenuActivity.class);
             startActivity(intent);
-            backgroundMusic.stop();
-            backgroundMusic.release();
             finish();
             return	true;
         }

@@ -13,6 +13,7 @@ public class Fuelsmall extends GameObject {
         private Random random = new Random();
         private Animation animation = new Animation();
         private int maxBorderHeight = 856;
+        private SoundPlayer sp;
 
 
         public Fuelsmall(Bitmap res, int w, int h, int numFrames) {

@@ -44,7 +44,7 @@
         android:id="@+id/textView2"
         android:soundEffectsEnabled="false"
         android:textSize="40sp"
-        tools:ignore="HardcodedText"
+        tools:ignore="HardcodedText,PrivateResource"
         android:layout_alignBaseline="@+id/textView1"
         android:layout_alignBottom="@+id/textView1"
         android:layout_toRightOf="@+id/textView1"

@@ -22,12 +22,13 @@
 
     <string name="help">Help</string>
 
-    <string name="helpscreen">\t\t\tCONTROLS\n
+    <string name="helpscreen">CONTROLS\n
 Touch the screen to move up and leave the screen to move down.
 
-\t\t\tABOUT\n
-A simple helicopter game where the copter is faulty and the
-objective is to reach base,the mission is to avoid missiles and enemy helicopters.
+\n\nABOUT\n
+Chopper Attack is an endless flying game. You are returning from tour and your helicopter is damaged,
+the mission is to avoid missiles and obstacles while keeping your helicopter in the air for as long as you can.
+
 
 
 </string>
@@ -37,5 +38,32 @@ objective is to reach base,the mission is to avoid missiles and enemy helicopter
     <string name="exit">Exit</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="pagetitle">pagetitle</string>
+    <string name="highscore_button">highscore button</string>
+    <string name="settings_button">settings button</string>
+    <string name="playbutton">playbutton</string>
+    <string name="dreacot_174_game_lab">Dreacot® Game Lab</string>
+    <string name="help_button">help button</string>
+    <string name="exit_button">exit button</string>
+    <string name="no">No</string>
+    <string name="really_quit">Do you really want to quit?</string>
+    <string name="yes">Yes</string>
+    <string name="quit">Exit Game</string>
+    <string name="backbutton">backbutton</string>
+    <string name="name">Username</string>
+    <string name="score">Score</string>
+    <string name="replaybutton">replaybutton</string>
+    <string name="gameover">Game Over</string>
+    <string name="avoid_these_are_missile">(avoid)These are missile</string>
+    <string name="collect_collecting_this_adds_1000_to_your_fuel">(collect)Collecting this adds +1000 to your fuel</string>
+    <string name="collect_this_adds_500_to_your_fuel">(collect)This adds +500 to your fuel</string>
+    <string name="avoid_this_takes_500_from_your_fuel">(avoid)This takes -500 from your fuel</string>
+    <string name="powerups">Power Ups</string>
+    <string name="posbig">posbig</string>
+    <string name="pos">pos</string>
+    <string name="neg">neg</string>
+    <string name="missile">missile</string>
+    <string name="bonus">bonus</string>
+    <string name="collect_this_adds_2500_to_your_score">(collect)This adds +2500 to your score</string>
 
 </resources>
